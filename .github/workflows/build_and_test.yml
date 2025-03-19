@@ -2,7 +2,7 @@ name: Build and test
 on:
   pull_request:
     types: [ opened, synchronize ]
-    branches: [ main, test, dev ]
+    branches: [ master, test, dev ]
 
 env:
   BUILD_DIR: Dist

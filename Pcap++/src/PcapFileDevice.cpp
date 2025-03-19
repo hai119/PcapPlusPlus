@@ -400,6 +400,7 @@ namespace pcpp
 		light_packet_header pktHeader;
 		const uint8_t* pktData = nullptr;
 
+		const size_t MAX_PACKET_SIZE = 65535;
 		if (!light_get_next_packet((light_pcapng_t*)m_LightPcapNg, &pktHeader, &pktData))
 		{
 			PCPP_LOG_DEBUG("Packet could not be read. Probably end-of-file");
@@ -414,6 +415,12 @@ namespace pcpp
 				PCPP_LOG_DEBUG("Packet could not be read. Probably end-of-file");
 				return false;
 			}
+		}
+
+		if (pktHeader.captured_length == 0 || pktHeader.captured_length > MAX_PACKET_SIZE || pktData == nullptr)
+		{
+			PCPP_LOG_ERROR("Invalid packet data or length");
+			return false;
 		}
 
 		uint8_t* myPacketData = new uint8_t[pktHeader.captured_length];
